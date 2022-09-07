@@ -24,6 +24,10 @@ void main(void)
     enum GameState state;
     state = Welcome;
 
+    WDTCTL = WDTPW | WDTHOLD;    // Stop watchdog timer. Always need to stop this!!
+                                 // You can then configure it properly, if desired
+
+
     configDisplay();
     configKeypad();
 
