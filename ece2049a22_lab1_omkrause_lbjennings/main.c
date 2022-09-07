@@ -20,6 +20,9 @@ void main(void)
     unsigned char currKey=0, dispSz = 3;
     unsigned char dispThree[3];
 
+    unsigned char aliens[10][5] = {{'5','5', '5', '5', '5'}};
+
+
     enum GameState state;
     state = Welcome;
 
@@ -61,7 +64,21 @@ void main(void)
             //count down to game start trigger alien drawing
             break;
         case DrawAliens://draw aliens
-            //draw aliens on screen and move them
+            Graphics_clearDisplay(&g_sContext);
+            int i, j;
+            for(i = 0; i < 10; i++){
+                for(j = 0; j<5; j++ ){
+                    unsigned char curr[2] = aliens[i][j] + '\0';
+
+                    //16 = horizontal spacer
+                    //8  = vertical spacer
+                    Graphics_drawStringCentered(&g_sContext, curr, AUTO_STRING_LENGTH, 16 * (j+1), 4 + i * 8, TRANSPARENT_TEXT);
+                }
+            }
+
+            Graphics_flushBuffer(&g_sContext);
+
+            state = CheckKeypad;
             break;
         case CheckKeypad://check keypad
             currKey = getKey();
