@@ -18,15 +18,22 @@ void main(void)
 {
     unsigned char currKey=0, dispSz = 3;
     unsigned char dispThree[3];
+    unsigned char state = 0;
 
 
+    configDisplay();
+    configKeypad();
+
+    Graphics_clearDisplay(&g_sContext); // Clear the display
 
     while(1)
     {
         switch(state)
         {
         case 0://welcome screen
-            //display welcome and wait for button press
+            Graphics_drawStringCentered(&g_sContext, "Welcome", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
+            Graphics_flushBuffer(&g_sContext);
+
             break;
         case 1://count down
             //count down to game start trigger alien drawing
@@ -39,6 +46,7 @@ void main(void)
             break;
         case 4://game over
             //display game over and allow for restart
+            break;
         }
     }
 
