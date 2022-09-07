@@ -32,17 +32,10 @@ void main(void)
     {
         switch(GameState)
         {
-<<<<<<< HEAD
         case Welcome://welcome screen
-            //display welcome and wait for button press
-            //print(12, 34, "SPACE INVADERS\0");
-            //if(keypressed){state = 3}
-=======
-        case 0://welcome screen
             Graphics_drawStringCentered(&g_sContext, "Welcome", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
             Graphics_flushBuffer(&g_sContext);
 
->>>>>>> 8ca88f4c3e99b3653fe82ff031a83efeb4f475ef
             break;
         case CountDown://count down
             //count down to game start trigger alien drawing
