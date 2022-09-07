@@ -11,6 +11,7 @@
 void swDelay(char numLoops);
 
 // Declare globals here
+enum GameState{Welcome, CountDown, DrawAliens, CheckKeypad, GameOver};
 
 // Main
 void main(void)
@@ -19,25 +20,32 @@ void main(void)
     unsigned char currKey=0, dispSz = 3;
     unsigned char dispThree[3];
 
+    GameState = Welcome;
 
 
     while(1)
     {
-        switch(state)
+        switch(GameState)
         {
-        case 0://welcome screen
+        case Welcome://welcome screen
             //display welcome and wait for button press
+            //print(12, 34, "SPACE INVADERS\0");
+            //if(keypressed){state = 3}
             break;
-        case 1://count down
+        case CountDown://count down
             //count down to game start trigger alien drawing
             break;
-        case 2://draw aliens
+        case DrawAliens://draw aliens
             //draw aliens on screen and move them
             break;
-        case 3://check keypad
+        case CheckKeypad://check keypad
+            //if(key == '*') {state = newGame; }
             //check keypad for button presses and remove appropriate aliens
             break;
-        case 4://game over
+        case GameOver://game over
+            //print("GAME OVER");
+            //count some number of loops
+            //state = 0;
             //display game over and allow for restart
         }
     }
