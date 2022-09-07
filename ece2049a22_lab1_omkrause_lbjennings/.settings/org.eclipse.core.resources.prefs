@@ -1,13 +1,13 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=8ca88f4c3e99b3653fe82ff031a83efeb4f475ef
 eclipse.preferences.version=1
-<<<<<<< HEAD
-=======
 encoding//Debug/LcdDriver/subdir_rules.mk=UTF-8
 encoding//Debug/LcdDriver/subdir_vars.mk=UTF-8
 encoding//Debug/fonts/subdir_rules.mk=UTF-8
 encoding//Debug/fonts/subdir_vars.mk=UTF-8
 encoding//Debug/lib/subdir_rules.mk=UTF-8
 encoding//Debug/lib/subdir_vars.mk=UTF-8
->>>>>>> 8ca88f4c3e99b3653fe82ff031a83efeb4f475ef
 encoding//Debug/makefile=UTF-8
 encoding//Debug/objects.mk=UTF-8
 encoding//Debug/sources.mk=UTF-8

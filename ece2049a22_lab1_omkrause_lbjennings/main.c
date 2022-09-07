@@ -19,9 +19,10 @@ void main(void)
 {
     unsigned char currKey=0, dispSz = 3;
     unsigned char dispThree[3];
-    unsigned char state = 0;
+    //unsigned char state = 0;
 
-    GameState = Welcome;
+    enum GameState state;
+    state = Welcome;
 
     configDisplay();
     configKeypad();
@@ -30,7 +31,7 @@ void main(void)
 
     while(1)
     {
-        switch(GameState)
+        switch(state)
         {
         case Welcome://welcome screen
             Graphics_drawStringCentered(&g_sContext, "Welcome", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
