@@ -112,4 +112,10 @@ PDE_DEPS__QUOTED :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
+<<<<<<< HEAD
+=======
+LcdDriver \
+fonts \
+lib \
+>>>>>>> 8ca88f4c3e99b3653fe82ff031a83efeb4f475ef
 

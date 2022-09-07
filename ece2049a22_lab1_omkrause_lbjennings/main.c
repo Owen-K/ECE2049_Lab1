@@ -19,18 +19,30 @@ void main(void)
 {
     unsigned char currKey=0, dispSz = 3;
     unsigned char dispThree[3];
+    unsigned char state = 0;
 
     GameState = Welcome;
 
+    configDisplay();
+    configKeypad();
+
+    Graphics_clearDisplay(&g_sContext); // Clear the display
 
     while(1)
     {
         switch(GameState)
         {
+<<<<<<< HEAD
         case Welcome://welcome screen
             //display welcome and wait for button press
             //print(12, 34, "SPACE INVADERS\0");
             //if(keypressed){state = 3}
+=======
+        case 0://welcome screen
+            Graphics_drawStringCentered(&g_sContext, "Welcome", AUTO_STRING_LENGTH, 48, 15, TRANSPARENT_TEXT);
+            Graphics_flushBuffer(&g_sContext);
+
+>>>>>>> 8ca88f4c3e99b3653fe82ff031a83efeb4f475ef
             break;
         case CountDown://count down
             //count down to game start trigger alien drawing
@@ -47,6 +59,7 @@ void main(void)
             //count some number of loops
             //state = 0;
             //display game over and allow for restart
+            break;
         }
     }
 
