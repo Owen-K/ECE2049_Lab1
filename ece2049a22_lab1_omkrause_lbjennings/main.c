@@ -7,11 +7,23 @@
  * into the main file of your project. */
 #include "peripherals.h"
 
+#define ALIENS_ROW 10
+#define ALIENS_COL 5
+
 // Function Prototypes
 void swDelay(char numLoops);
 
 // Declare globals here
-enum GameState{Welcome, CountDown, DrawAliens, CheckKeypad, GameOver};
+enum GameState{Welcome, CountDown, DrawAliens, MoveAliens, GenAliens, CheckKeypad, GameOver};
+
+void resetAliens(unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
+    int i, j;
+    for(i = 0; i < ALIENS_ROW; i++){
+        for(j = 0; j < ALIENS_COL; j++){
+            aliens[i][j] = '0';
+        }
+    }
+}
 
 // Main
 void main(void)
@@ -20,7 +32,7 @@ void main(void)
     unsigned char currKey=0, dispSz = 3;
     unsigned char dispThree[3];
 
-    unsigned char aliens[10][5] = {{'5','5', '5', '5', '5'}};
+    unsigned char aliens[ALIENS_ROW][ALIENS_COL];
 
 
     enum GameState state;
@@ -34,12 +46,15 @@ void main(void)
     configKeypad();
 
     Graphics_clearDisplay(&g_sContext); // Clear the display
-
+    int i , j; //loop variables used at various points
+    int level = 1;
     while(1)
     {
         switch(state)
         {
         case Welcome://welcome screen
+            resetAliens(aliens);
+            Graphics_clearDisplay(&g_sContext);
             Graphics_drawStringCentered(&g_sContext, "SPACE INVADERS", AUTO_STRING_LENGTH, 48, 48, TRANSPARENT_TEXT);
             Graphics_flushBuffer(&g_sContext);
 
@@ -60,14 +75,41 @@ void main(void)
             Graphics_flushBuffer(&g_sContext);
             swDelay(1);
 
-            state = DrawAliens;
+            state = GenAliens;
             //count down to game start trigger alien drawing
+            break;
+        case MoveAliens:
+            swDelay(2);
+            for(i = ALIENS_ROW; i > 0; i--){
+                for(j = 0; j<ALIENS_COL; j++){
+                    aliens[i][j] = aliens[i-1][j];
+                }
+            }
+            state = GenAliens;
+
+            //if reached end condition
+            for (i = 0; i < ALIENS_COL; i++){
+                if(aliens[ALIENS_ROW][i] != '0'){
+                    state = GameOver;
+                }
+            }
+            break;
+        case GenAliens:
+            for(i = 0; i < ALIENS_COL; i++){
+                if(rand() % 5 + 1 <= level){
+                    aliens[0][i] = '1' + i;
+                }else{
+                    aliens[0][i] = '0';
+                }
+            }
+            //state = CheckKeypad;
+            state = DrawAliens;
             break;
         case DrawAliens://draw aliens
             Graphics_clearDisplay(&g_sContext);
-            int i, j;
-            for(i = 0; i < 10; i++){
-                for(j = 0; j<5; j++ ){
+
+            for(i = 0; i < ALIENS_ROW; i++){
+                for(j = 0; j<ALIENS_COL; j++ ){
                     unsigned char curr[2] = aliens[i][j] + '\0';
 
                     //16 = horizontal spacer
@@ -78,7 +120,8 @@ void main(void)
 
             Graphics_flushBuffer(&g_sContext);
 
-            state = CheckKeypad;
+            //state = CheckKeypad;
+            state = MoveAliens;
             break;
         case CheckKeypad://check keypad
             currKey = getKey();
@@ -89,9 +132,13 @@ void main(void)
             //check keypad for button presses and remove appropriate aliens
             break;
         case GameOver://game over
-            //print("GAME OVER");
-            //count some number of loops
-            //state = 0;
+            Graphics_clearDisplay(&g_sContext);
+            Graphics_drawStringCentered(&g_sContext, "GAME OVER", AUTO_STRING_LENGTH, 48, 48, TRANSPARENT_TEXT);
+            Graphics_drawStringCentered(&g_sContext, "YOU SUCK", AUTO_STRING_LENGTH, 48, 58, TRANSPARENT_TEXT);
+            Graphics_flushBuffer(&g_sContext);
+
+            swDelay(3);
+            state = Welcome;
             //display game over and allow for restart
             break;
         }
