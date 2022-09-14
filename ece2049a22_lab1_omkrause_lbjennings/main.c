@@ -16,7 +16,7 @@
 void swDelay(char numLoops);
 
 // Declare globals here
-enum GameState{Welcome, CheckStart, CountDown, MoveAliens, GenAliens, DrawAliens, CheckEnd, CheckKeypad, GameOver};
+enum GameState{Welcome, CheckStart, CountDown, MoveAliens, GenAliens, DrawAliens, CheckEnd, CheckKeypad, GameOver, NewLevel};
 
 void resetAliens(unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
     int i, j;
@@ -87,6 +87,7 @@ void main(void)
         case CountDown:
             resetAliens(aliens);
             numAliens = 0;
+            maxAliens = level * 5;
             numShot = 0;
             //count down to game start trigger alien drawing
             Graphics_clearDisplay(&g_sContext);
@@ -107,7 +108,7 @@ void main(void)
             break;
 
         case MoveAliens:
-            //swDelay(2);
+
             for(i = ALIENS_ROW-2; i > 0; i--){
                 for(j = 0; j<ALIENS_COL; j++){
                     aliens[i][j] = aliens[i-1][j];
@@ -142,7 +143,7 @@ void main(void)
             }
 
             if(numShot == maxAliens)
-                state = GameOver;
+                state = NewLevel;
 
             break;
 
@@ -196,10 +197,21 @@ void main(void)
             Graphics_flushBuffer(&g_sContext);
 
             swDelay(3);
+            level = 1;
             state = Welcome;
             //display game over and allow for restart
             break;
+        case NewLevel:
+            Graphics_clearDisplay(&g_sContext);
+            Graphics_drawStringCentered(&g_sContext, "YOU WIN", AUTO_STRING_LENGTH, 48, 48, TRANSPARENT_TEXT);
+            Graphics_drawStringCentered(&g_sContext, "NEW LEVEL", AUTO_STRING_LENGTH, 48, 58, TRANSPARENT_TEXT);
+            Graphics_flushBuffer(&g_sContext);
+            swDelay(3);
+            level++;
+            state = CountDown;
+            break;
         }
+
             loopCounter++;
     }
 
