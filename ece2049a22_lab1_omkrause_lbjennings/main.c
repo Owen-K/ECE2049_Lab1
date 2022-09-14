@@ -10,7 +10,7 @@
 
 #define ALIENS_ROW 10
 #define ALIENS_COL 5
-#define LOOP_MAX 20000 //40,000
+#define LOOP_MAX 4000 //40,000
 
 // Function Prototypes
 void swDelay(char numLoops);
@@ -167,7 +167,7 @@ void main(void)
 
 
         case CheckKeypad://check keypad, usual state for program
-            if(loopCounter > LOOP_MAX){
+            if(loopCounter > LOOP_MAX/level){
                 state = MoveAliens;
                 loopCounter = 0;
                 break;
