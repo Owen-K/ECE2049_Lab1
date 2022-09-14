@@ -64,7 +64,6 @@ void main(void)
     int level = 1;
     int numAliens = 0;
     long unsigned int loopCounter = 0;
-    bool GameOn = false;
     while(1)
     {
         switch(state)
@@ -170,6 +169,9 @@ void main(void)
                 state = CountDown;
             else if(currKey <= '5' && currKey >= '1'){
                 //shootColumn(currKey, aliens);
+                for (i = 0; i < ALIENS_COL; i++){
+                    aliens[ALIENS_ROW-1][i] = 0;
+                }
                 aliens[ALIENS_ROW-1][currKey-'1'] = '0';
                 state = DrawAliens;
             }
