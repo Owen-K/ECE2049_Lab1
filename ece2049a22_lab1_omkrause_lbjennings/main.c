@@ -27,17 +27,17 @@ void resetAliens(unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
     }
 }
 
-/*void shootColumn(unsigned char currKey, unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
+void shootColumn(unsigned char currKey, unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
     int i;
-    int j = currKey - '0';
-    for(i = ALIENS_ROW; i>= 0; i--){
+    int j = currKey - '1';
+    for(i = ALIENS_ROW-1; i>= 0; i--){
         if(aliens[i][j] == currKey){
             aliens[i][j] = 0;
             break;
         }
     }
-    aliens[ALIENS_ROW][j] = '0';
-}*/
+    //aliens[ALIENS_ROW][j] = '0';
+}
 
 // Main
 void main(void)
@@ -168,7 +168,7 @@ void main(void)
             if(currKey == '*')
                 state = CountDown;
             else if(currKey <= '5' && currKey >= '1'){
-                //shootColumn(currKey, aliens);
+                shootColumn(currKey, aliens);
                 for (i = 0; i < ALIENS_COL; i++){
                     aliens[ALIENS_ROW-1][i] = 0;
                 }
