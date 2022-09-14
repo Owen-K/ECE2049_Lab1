@@ -27,15 +27,16 @@ void resetAliens(unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
     }
 }
 
-void shootColumn(unsigned char currKey, unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
+int shootColumn(unsigned char currKey, unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
     int i;
     int j = currKey - '1';
     for(i = ALIENS_ROW-1; i>= 0; i--){
         if(aliens[i][j] == currKey){
             aliens[i][j] = 0;
-            break;
+            return 1;
         }
     }
+    return 0;
     //aliens[ALIENS_ROW][j] = '0';
 }
 
@@ -63,6 +64,8 @@ void main(void)
     int i , j; //loop variables used at various points
     int level = 1;
     int numAliens = 0;
+    int maxAliens = 5;
+    int numShot   = 0;
     long unsigned int loopCounter = 0;
     while(1)
     {
@@ -84,6 +87,7 @@ void main(void)
         case CountDown:
             resetAliens(aliens);
             numAliens = 0;
+            numShot = 0;
             //count down to game start trigger alien drawing
             Graphics_clearDisplay(&g_sContext);
             Graphics_drawStringCentered(&g_sContext, "3", AUTO_STRING_LENGTH, 48, 48, TRANSPARENT_TEXT);
@@ -115,7 +119,7 @@ void main(void)
 
         case GenAliens:
             for(i = 0; i < ALIENS_COL; i++){
-                if(rand() % 5 + 1 <= level && numAliens < 5){
+                if(rand() % 5 + 1 <= level && numAliens < maxAliens){
                     aliens[0][i] = '1' + i;
                     numAliens++;
                 }else{
@@ -127,6 +131,7 @@ void main(void)
             break;
 
         case CheckEnd:
+
             for (i = 0; i < ALIENS_COL; i++){
                 if(aliens[ALIENS_ROW-2][i] != 0){ //&& aliens[ALIENS_ROW-1][i] != '0'){
                     state = GameOver;
@@ -135,6 +140,10 @@ void main(void)
                     state = DrawAliens;
                 }
             }
+
+            if(numShot == maxAliens)
+                state = GameOver;
+
             break;
 
         case DrawAliens://draw aliens
@@ -168,7 +177,8 @@ void main(void)
             if(currKey == '*')
                 state = CountDown;
             else if(currKey <= '5' && currKey >= '1'){
-                shootColumn(currKey, aliens);
+                int k = shootColumn(currKey, aliens);
+                numShot += k;
                 for (i = 0; i < ALIENS_COL; i++){
                     aliens[ALIENS_ROW-1][i] = 0;
                 }
