@@ -51,19 +51,6 @@ void resetAliens(unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
     }
 }
 
-//scans up a column to see if has a
-/*int shootColumn(unsigned char currKey, unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
-    int i;
-    int j = currKey - '1';
-    for(i = ALIENS_ROW-1; i>= 0; i--){
-        if(aliens[i][j] == currKey){
-            aliens[i][j] = 0;
-            return 1;
-        }
-    }
-    return 0;
-    //aliens[ALIENS_ROW][j] = '0';
-}*/
 
 // Main
 void main(void)
