@@ -39,7 +39,7 @@ void swDelay(char numLoops)
 // Declare globals here
 
 //enumeration of all the gamestates
-enum GameState{Welcome, CheckStart, CountDown, MoveAliens, GenAliens, DrawAliens, CheckEnd, CheckKeypad, GameOver, NewLevel};
+enum GameState{Welcome, CheckStart, CountDown, MoveAliens, GenAliens, DrawAliens, CheckEnd, ShootColumn, CheckKeypad, GameOver, NewLevel};
 
 //method to reset the aliens array
 void resetAliens(unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
@@ -52,7 +52,7 @@ void resetAliens(unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
 }
 
 //scans up a column to see if has a
-int shootColumn(unsigned char currKey, unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
+/*int shootColumn(unsigned char currKey, unsigned char aliens[ALIENS_ROW][ALIENS_COL]){
     int i;
     int j = currKey - '1';
     for(i = ALIENS_ROW-1; i>= 0; i--){
@@ -63,7 +63,7 @@ int shootColumn(unsigned char currKey, unsigned char aliens[ALIENS_ROW][ALIENS_C
     }
     return 0;
     //aliens[ALIENS_ROW][j] = '0';
-}
+}*/
 
 // Main
 void main(void)
@@ -90,7 +90,6 @@ void main(void)
     int i , j; //loop variables used at various points
     int level =     1; //level representing current difficulty
     int numAliens = 0; //amount of aliens created during current level
-    int maxAliens = 5;
     int numShot   = 0; //amount of aliens successfully eliminated
 
     //long int counting the number of loops passed through
@@ -120,7 +119,6 @@ void main(void)
             //display 3 2 1 countdown
             resetAliens(aliens);
             numAliens = 0;
-            maxAliens = level * 5;
             numShot = 0;
             //count down to game start trigger alien drawing
             Graphics_clearDisplay(&g_sContext);
@@ -158,7 +156,7 @@ void main(void)
             //randomly generates aliens on first row of screen
             //see lab report for detailed explanation on how it works
             for(i = 0; i < ALIENS_COL; i++){
-                if(rand() % 5 + 1 <= level && numAliens < maxAliens){
+                if(rand() % 5 + 1 <= level && numAliens < level * 5){
                     aliens[0][i] = '1' + i;
                     numAliens++;
                 }else{
@@ -185,7 +183,7 @@ void main(void)
 
             //checks if player has shot all of the aliens
             //moves to next level if so
-            if(numShot == maxAliens)
+            if(numShot == level * 5)
                 state = NewLevel;
 
             break;
@@ -214,6 +212,27 @@ void main(void)
             state = CheckKeypad;
             break;
 
+        case ShootColumn:
+            //eliminates first alien it finds in column pressed
+            ; //this is an empty statement to avoid C complaining about a declaration after a label
+            int index = currKey - '1';
+            for(i = ALIENS_ROW-1; i>= 0; i--){
+                if(aliens[i][index] == currKey){
+                    aliens[i][index] = 0;
+                    numShot++;
+                    break;
+                }
+            }
+            //This displays a 0 under the column the player last shot
+            //It looks nice
+            //this for loop wipes the bottom row
+            for (i = 0; i < ALIENS_COL; i++){
+                aliens[ALIENS_ROW-1][i] = 0;
+            }
+            //sets appropriate index to display a 0
+            aliens[ALIENS_ROW-1][currKey-'1'] = '0';
+            state = DrawAliens;
+            break;
 
         case CheckKeypad://check keypad, usual state for program
             //checks if time to update aliens
@@ -230,14 +249,8 @@ void main(void)
                 //resets and starts new game
                 state = CountDown;
             else if(currKey <= '5' && currKey >= '1'){
-                //shoots up
-                int k = shootColumn(currKey, aliens);
-                numShot += k;
-                for (i = 0; i < ALIENS_COL; i++){
-                    aliens[ALIENS_ROW-1][i] = 0;
-                }
-                aliens[ALIENS_ROW-1][currKey-'1'] = '0';
-                state = DrawAliens;
+                //if key is between 1 and 5, shoots up that column
+                state = ShootColumn;
             }
 
 
