@@ -229,13 +229,14 @@ void main(void)
             for (i = 0; i < ALIENS_COL; i++){
                 aliens[ALIENS_ROW-1][i] = 0;
             }
-            //sets appropriate index to display a 0
+            //sets appropriate index to display a 0 char
             aliens[ALIENS_ROW-1][currKey-'1'] = '0';
             state = DrawAliens;
             break;
 
         case CheckKeypad://check keypad, usual state for program
             //checks if time to update aliens
+            //difficulty control in the form of dividing loop max by the current level
             if(loopCounter > LOOP_MAX/level){
                 state = MoveAliens;
                 loopCounter = 0;
@@ -252,7 +253,6 @@ void main(void)
                 //if key is between 1 and 5, shoots up that column
                 state = ShootColumn;
             }
-
 
             break;
 
